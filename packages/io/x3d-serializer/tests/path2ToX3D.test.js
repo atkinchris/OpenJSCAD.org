@@ -22,7 +22,7 @@ test('serialize 2D path to X3D Polyline2D', (t) => {
 
   const path2 = primitives.arc({ center: [5, 5], endAngle: 45, segments: 16 })
 
-  results = serialize({metadata: false}, path2)
+  results = serialize({ metadata: false }, path2)
   t.is(results.length, 1)
 
   obs = results[0]
@@ -35,7 +35,7 @@ test('serialize 2D path to X3D Polyline2D', (t) => {
 
   const path3 = colors.colorize([0, 0, 0], path2)
 
-  results = serialize({metadata: false}, path2, path3)
+  results = serialize({ metadata: false }, path2, path3)
   t.is(results.length, 1)
 
   obs = results[0]
@@ -48,8 +48,6 @@ test('serialize 2D path to X3D Polyline2D', (t) => {
   // and color on path3
   t.is(countOf('Appearance', obs), 2)
   t.is(countOf('Material', obs), 1)
-  t.is(countOf('diffuseColor', obs), 1)
+  t.is(countOf('diffuseColor', obs), 0)
   t.is(countOf('emissiveColor', obs), 1)
-
 })
-

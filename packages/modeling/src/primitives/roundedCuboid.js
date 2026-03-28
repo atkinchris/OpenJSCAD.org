@@ -8,7 +8,8 @@ const poly3 = require('../geometries/poly3')
 
 const { sin, cos } = require('../maths/utils/trigonometry')
 
-const { isGT, isGTE, isNumberArray } = require('./commonChecks')
+const { isGTE, isNumberArray } = require('./commonChecks')
+const cuboid = require('./cuboid')
 
 const createCorners = (center, size, radius, segments, slice, positive) => {
   const pitch = (TAU / 4) * slice / segments
@@ -135,15 +136,21 @@ const roundedCuboid = (options) => {
 
   if (!isNumberArray(center, 3)) throw new Error('center must be an array of X, Y and Z values')
   if (!isNumberArray(size, 3)) throw new Error('size must be an array of X, Y and Z values')
-  if (!size.every((n) => n > 0)) throw new Error('size values must be greater than zero')
-  if (!isGT(roundRadius, 0)) throw new Error('roundRadius must be greater than zero')
+  if (!size.every((n) => n >= 0)) throw new Error('size values must be positive')
+  if (!isGTE(roundRadius, 0)) throw new Error('roundRadius must be positive')
   if (!isGTE(segments, 4)) throw new Error('segments must be four or more')
+
+  // if any size is zero return empty geometry
+  if (size[0] === 0 || size[1] === 0 || size[2] === 0) return geom3.create()
+
+  // if roundRadius is zero, return cuboid
+  if (roundRadius === 0) return cuboid({ center, size })
 
   size = size.map((v) => v / 2) // convert to radius
 
   if (roundRadius > (size[0] - EPS) ||
       roundRadius > (size[1] - EPS) ||
-      roundRadius > (size[2] - EPS)) throw new Error('roundRadius must be smaller then the radius of all dimensions')
+      roundRadius > (size[2] - EPS)) throw new Error('roundRadius must be smaller than the radius of all dimensions')
 
   segments = Math.floor(segments / 4)
 

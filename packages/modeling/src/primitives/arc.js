@@ -17,6 +17,8 @@ const { isGT, isGTE, isNumberArray } = require('./commonChecks')
  * @param {Boolean} [options.makeTangent=false] - adds line segments at both ends of the arc to ensure that the gradients at the edges are tangent
  * @returns {path2} new 2D path
  * @alias module:modeling/primitives.arc
+ * @example
+ * let myshape = arc({ center: [-1, -1], radius: 2, endAngle: (TAU / 4)})
  */
 const arc = (options) => {
   const defaults = {
@@ -58,8 +60,8 @@ const arc = (options) => {
     vec2.add(point, point, centerv)
     pointArray.push(point)
   } else {
-    // note: add one additional step to acheive full rotation
-    const numsteps = Math.max(1, Math.floor(segments * (rotation / TAU))) + 1
+    const numsteps = Math.floor(segments * (Math.abs(rotation) / TAU))
+
     let edgestepsize = numsteps * 0.5 / rotation // step size for half a degree
     if (edgestepsize > 0.25) edgestepsize = 0.25
 

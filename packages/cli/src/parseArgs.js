@@ -13,7 +13,7 @@ const parseArgs = (args) => {
   // hint: https://github.com/substack/node-optimist
   //       https://github.com/visionmedia/commander.js
   if (args.length < 1) {
-    console.log('USAGE:\n\nopenjscad [-v] <file> [-of <format>] [-o <output>]')
+    console.log('USAGE:\n\njscad [-v] <file> [-of <format>] [-o <output>]')
     console.log(`\t<file>  :\tinput (Supported types: folder, .${inputExtensions.join(', .')})`)
     console.log(`\t<output>:\toutput (Supported types: folder, .${outputExtensions.join(', .')})`)
     console.log(`\t<format>:\t${outputFormats.join(', ')}`)
@@ -24,6 +24,8 @@ const parseArgs = (args) => {
   let inputFormat
   let outputFile
   let outputFormat
+  let generateParts = false
+  let zip = false
   const params = {} // parameters to feed the script if applicable
   let addMetaData = false // wether to add metadata to outputs or not : ie version info, timestamp etc
   let inputIsDirectory = false // did we pass in a folder or a file ?
@@ -41,6 +43,10 @@ const parseArgs = (args) => {
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '-of') { // -of <format>
       outputFormat = args[++i]
+    } else if (args[i] === '-gp') {
+      generateParts = true
+    } else if (args[i] === '-z') {
+      zip = true
     } else if (args[i].match(/^-o(\S.+)/)) { // -o<output>
       outputFile = args[i]
       outputFile = outputFile.replace(/^-o(\S+)$/, '$1')
@@ -92,6 +98,8 @@ const parseArgs = (args) => {
     inputFormat,
     outputFile,
     outputFormat,
+    generateParts,
+    zip,
     params,
     addMetaData,
     inputIsDirectory

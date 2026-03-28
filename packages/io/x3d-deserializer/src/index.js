@@ -20,6 +20,7 @@ All code released under MIT license
  * @example
  * const { deserializer, extension } = require('@jscad/x3d-deserializer')
  */
+const { ensureString } = require('@jscad/io-utils')
 
 const version = require('../package.json').version
 
@@ -48,7 +49,7 @@ const deserialize = (options, input) => {
     addMetaData: true
   }
   options = Object.assign({}, defaults, options)
-
+  input = ensureString(input)
   return options.output === 'script' ? translate(options, input) : instantiate(options, input)
 }
 

@@ -23,10 +23,12 @@
 module.exports = {
   clone: require('./clone'),
   create: require('./create'),
+  fromPointsConvex: require('./fromPointsConvex'),
   fromPoints: require('./fromPoints'),
   fromCompactBinary: require('./fromCompactBinary'),
   invert: require('./invert'),
   isA: require('./isA'),
+  isConvex: require('./isConvex'),
   toPoints: require('./toPoints'),
   toPolygons: require('./toPolygons'),
   toString: require('./toString'),
